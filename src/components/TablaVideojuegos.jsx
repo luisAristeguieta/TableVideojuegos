@@ -1,7 +1,7 @@
 // src/components/TablaVideojuegos.jsx
 import './TablaVideojuegos.css';
 
-function TablaVideojuegos({ videojuegos }) {
+function TablaVideojuegos({ videojuegos, onEliminar, onEditar }) {
     // Función para formatear el precio
     const formatearPrecio = (precio) => {
         if (precio === 0) return 'Gratis';
