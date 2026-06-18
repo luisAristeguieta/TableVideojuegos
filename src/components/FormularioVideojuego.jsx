@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import './FormularioVideojuego.css';
 
 function FormularioVideojuego({ onGuardar }) {
     const location = useLocation();
@@ -69,7 +70,8 @@ function FormularioVideojuego({ onGuardar }) {
     }
 
     return (
-        <div>
+        <div className="formulario-container" >
+            <div className="formulario-card">
             <h2>{juegoRecuperado ? "✏️ Editar Videojuego" : "🎮 Nuevo Videojuego"}</h2>
             <form>
 
@@ -178,12 +180,17 @@ function FormularioVideojuego({ onGuardar }) {
                 </div>
 
                 {/* Botones */}
-                <div>
-                    <button onClick={manejarGuardar}> Guardar </button>
-                    <button onClick={manejarCancelar}> Cancelar </button>
+                <div className="form-buttons" >
+                    <button type="button" className="btn-guardar" onClick={manejarGuardar}>
+                        💾 Guardar
+                    </button>
+                    <button type="button" className="btn-cancelar" onClick={manejarCancelar}>
+                        ❌ Cancelar
+                    </button>
                 </div>
 
             </form>
+            </div>
         </div>
     );
 }

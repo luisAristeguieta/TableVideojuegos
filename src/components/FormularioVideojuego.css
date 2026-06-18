@@ -1,0 +1,256 @@
+/* src/components/FormularioVideojuego.css */
+
+/* Contenedor principal - Fondo morado */
+.formulario-container {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 20px;
+    padding: 20px;
+    background: linear-gradient(135deg, #6a1b9a 0%, #8e24aa 50%, #9c27b0 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+/* Tarjeta del formulario - Fondo blanco */
+.formulario-card {
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 25px 50px rgba(106, 27, 154, 0.3);
+    padding: 32px;
+    max-width: 600px;
+    width: 100%;
+    margin: 20px 0;
+    border: 1px solid rgba(156, 39, 176, 0.1);
+}
+
+/* Título del formulario */
+.formulario-card h2 {
+    color: #4a148c;
+    font-size: 1.8rem;
+    text-align: center;
+    margin-bottom: 28px;
+    padding-bottom: 16px;
+    border-bottom: 3px solid #e8eaf6;
+    position: relative;
+}
+
+.formulario-card h2::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(90deg, #4caf50, #9c27b0);
+    border-radius: 3px;
+}
+
+/* Grupos de formulario */
+.formulario-card form > div {
+    margin-bottom: 18px;
+}
+
+/* Etiquetas */
+.formulario-card label {
+    display: block;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 6px;
+    font-size: 0.9rem;
+}
+
+.formulario-card label:has(input[type="checkbox"]) {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+/* Inputs, selects */
+.formulario-card input,
+.formulario-card select {
+    width: 100%;
+    padding: 10px 14px;
+    border: 2px solid #e8eaf6;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+    background-color: #fafafa;
+}
+
+.formulario-card input:focus,
+.formulario-card select:focus {
+    border-color: #6a1b9a;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(106, 27, 154, 0.15);
+    background-color: #ffffff;
+}
+
+.formulario-card input:hover,
+.formulario-card select:hover {
+    border-color: #9c27b0;
+}
+
+/* Inputs de número */
+.formulario-card input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+.formulario-card input[type="number"]::-webkit-outer-spin-button,
+.formulario-card input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Input range (progreso) */
+.formulario-card input[type="range"] {
+    width: 100%;
+    padding: 0;
+    background: transparent;
+    border: none;
+    -webkit-appearance: none;
+}
+
+.formulario-card input[type="range"]::-webkit-slider-runnable-track {
+    height: 8px;
+    background: #e8eaf6;
+    border-radius: 10px;
+    border: none;
+}
+
+.formulario-card input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #4caf50, #66bb6a);
+    cursor: pointer;
+    margin-top: -6px;
+    box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
+}
+
+.formulario-card input[type="range"]::-webkit-slider-thumb:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4);
+}
+
+/* Checkbox */
+.formulario-card input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    accent-color: #4caf50;
+    flex-shrink: 0;
+}
+
+/* Vista previa de imagen */
+.formulario-card .preview-imagen {
+    margin-top: 8px;
+    display: flex;
+    justify-content: center;
+}
+
+.formulario-card .preview-imagen img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 2px solid #e8eaf6;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Botones del formulario */
+.formulario-card .form-buttons {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+    border-top: 2px solid #e8eaf6;
+    padding-top: 24px;
+}
+
+.formulario-card .btn-guardar {
+    flex: 1;
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #4caf50, #66bb6a);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.formulario-card .btn-guardar:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(76, 175, 80, 0.4);
+}
+
+.formulario-card .btn-cancelar {
+    flex: 1;
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #f44336, #d32f2f);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.formulario-card .btn-cancelar:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(244, 67, 54, 0.4);
+}
+
+/* Responsive para tablets */
+@media (max-width: 768px) {
+    .formulario-container {
+        margin: 10px;
+        padding: 10px;
+    }
+
+    .formulario-card {
+        padding: 24px;
+    }
+
+    .formulario-card h2 {
+        font-size: 1.5rem;
+    }
+}
+
+/* Responsive para móviles */
+@media (max-width: 480px) {
+    .formulario-container {
+        margin: 5px;
+        padding: 5px;
+    }
+
+    .formulario-card {
+        padding: 16px;
+    }
+
+    .formulario-card h2 {
+        font-size: 1.2rem;
+    }
+
+    .formulario-card input,
+    .formulario-card select {
+        padding: 8px 12px;
+        font-size: 0.9rem;
+    }
+
+    .formulario-card .form-buttons {
+        flex-direction: column;
+    }
+
+    .formulario-card .btn-guardar,
+    .formulario-card .btn-cancelar {
+        padding: 10px;
+        font-size: 0.9rem;
+    }
+}
