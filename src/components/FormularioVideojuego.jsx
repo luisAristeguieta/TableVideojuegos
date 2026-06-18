@@ -147,7 +147,6 @@ function FormularioVideojuego({ onGuardar }) {
                         }}
 
                         placeholder="Ej: The Legend of Zelda"
-                        required
                         className={errores.titulo ? 'input-error' : ''}
                     />
                     {errores.titulo && <span className="error-mensaje">{errores.titulo}</span>}
@@ -160,7 +159,7 @@ function FormularioVideojuego({ onGuardar }) {
                         onChange={(e) => {
                             setGenero(e.target.value);
                             if (errores.genero) setErrores({ ...errores, genero: '' });
-                        }} required
+                        }}
                         className={errores.genero ? 'input-error' : ''}
                     >
                         <option value="">Selecciona un género</option>
@@ -187,7 +186,6 @@ function FormularioVideojuego({ onGuardar }) {
                             if (errores.plataforma) setErrores({ ...errores, plataforma: '' });
                         }}
                         placeholder="Ej: PC, PS5, Xbox, Nintendo Switch"
-                        required
                         className={errores.plataforma ? 'input-error' : ''}
                     />
                     {errores.plataforma && <span className="error-mensaje">{errores.plataforma}</span>}
@@ -203,7 +201,6 @@ function FormularioVideojuego({ onGuardar }) {
                             if (errores.fechaLanzamiento) setErrores({ ...errores, fechaLanzamiento: '' });
                         }}
                         max={new Date().toISOString().split('T')[0]}
-                        required
                         className={errores.fechaLanzamiento ? 'input-error' : ''}
                     />
                     {errores.fechaLanzamiento && <span className="error-mensaje">{errores.fechaLanzamiento}</span>}
@@ -221,7 +218,6 @@ function FormularioVideojuego({ onGuardar }) {
                         placeholder="Ej: 29.99"
                         min="0"
                         step="0.01"
-                        required
                     />
                     {errores.precio && <span className="error-mensaje">{errores.precio}</span>}
                 </div>
@@ -283,7 +279,7 @@ function FormularioVideojuego({ onGuardar }) {
                             rows="4"
                             minLength="10"
                             maxLength="250"
-                            required
+                        
                             className={errores.sinopsis ? 'input-error' : ''}
                         />
                         <small>{sinopsis.length}/250 caracteres</small>
@@ -302,7 +298,7 @@ function FormularioVideojuego({ onGuardar }) {
                         placeholder="Ej: 85"
                         min="1"
                         max="100"
-                        required
+                    
                         className={errores.calificacion ? 'input-error' : ''}
                     />
                     {errores.calificacion && <span className="error-mensaje">{errores.calificacion}</span>}
