@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react'; 
+import { useState, useEffect } from 'react';
 import TablaVideojuegos from './components/TablaVideojuegos';
 import data from './data/videojuegos';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import FormularioVideojuego from './components/FormularioVideojuego';
 import Navbar from './components/Navbar';
 import PaginaNoEncontrada from './components/PaginaNoEncontrada';
-import AlertaNotificacion from './components/AlertaNotificacion'; 
+import AlertaNotificacion from './components/AlertaNotificacion';
 
 
 
@@ -23,16 +23,19 @@ function App() {
     localStorage.setItem("lista_videojuegos", JSON.stringify(videojuegos));
   }, [videojuegos]);
 
-  
+
   function agregarVideojuego(juegoNuevo) {
     setVideojuegos([...videojuegos, juegoNuevo]);
     setAlerta(`✅ "${juegoNuevo.titulo}" agregado correctamente`);  // Uso de la alerta
   }
 
   function eliminarVideojuego(id) {
+    const juegoEliminado = videojuegos.find((juego) => juego.id === id);
     const filtrados = videojuegos.filter((juego) => juego.id !== id);
     setVideojuegos(filtrados);
-    setAlerta(`🗑️ "${juegoEliminado.titulo}" eliminado correctamente`); // Uso de la alerta
+    if (juegoEliminado) {
+      setAlerta(`🗑️ "${juegoEliminado.titulo}" eliminado correctamente`);
+    }
   }
 
   function editarVideojuego(juegoEditado) {
@@ -57,9 +60,15 @@ function App() {
   }
 
   return (
-     <BrowserRouter>
+    <BrowserRouter>
       <div className="app">
         <Navbar />
+        {alerta && (
+          <AlertaNotificacion
+            mensaje={alerta}
+            onCerrar={() => setAlerta(null)}
+          />
+        )}
         <Routes>
           <Route
             path="/"
