@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import FormularioVideojuego from './components/FormularioVideojuego';
 import Navbar from './components/Navbar';
 import PaginaNoEncontrada from './components/PaginaNoEncontrada';
+import AlertaNotificacion from './components/AlertaNotificacion'; 
 
 
 
@@ -15,19 +16,23 @@ function App() {
     return datosGuardados ? JSON.parse(datosGuardados) : data;
   });
 
-  function agregarVideojuego(juegoNuevo) {
-    setVideojuegos([...videojuegos, juegoNuevo]);
-  }
-
+  const [alerta, setAlerta] = useState(null); // Agrega variable para alertas
 
   //Escritura aut - Guarda en localStorage cada vez que cambia el estado
   useEffect(() => {
     localStorage.setItem("lista_videojuegos", JSON.stringify(videojuegos));
   }, [videojuegos]);
 
+  
+  function agregarVideojuego(juegoNuevo) {
+    setVideojuegos([...videojuegos, juegoNuevo]);
+    setAlerta(`✅ "${juegoNuevo.titulo}" agregado correctamente`);  // Uso de la alerta
+  }
+
   function eliminarVideojuego(id) {
     const filtrados = videojuegos.filter((juego) => juego.id !== id);
     setVideojuegos(filtrados);
+    setAlerta(`🗑️ "${juegoEliminado.titulo}" eliminado correctamente`); // Uso de la alerta
   }
 
   function editarVideojuego(juegoEditado) {
@@ -39,6 +44,7 @@ function App() {
       }
     });
     setVideojuegos(actualizados);
+    setAlerta(`✏️ "${juegoEditado.titulo}" editado correctamente`); // Uso de la alerta
   }
 
   function manejarGuardar(empleado) {
