@@ -1,7 +1,11 @@
 // src/components/TablaVideojuegos.jsx
 import './TablaVideojuegos.css';
+import { useNavigate } from 'react-router-dom';
 
-function TablaVideojuegos({ videojuegos, onEliminar, onEditar }) {
+function TablaVideojuegos({ videojuegos, onEliminar}) {
+    
+    const navigate = useNavigate();
+    
     // Función para formatear el precio
     const formatearPrecio = (precio) => {
         if (precio === 0) return 'Gratis';
@@ -12,6 +16,10 @@ function TablaVideojuegos({ videojuegos, onEliminar, onEditar }) {
     const calcularPorcentaje = (progreso) => {
         return `${Math.round(progreso * 100)}%`;
     };
+
+     function manejarEditar(juego) {
+        navigate('/editar', { state: { juego } });
+    }
 
     return (
         <div className="videojuegos-container">
@@ -76,7 +84,7 @@ function TablaVideojuegos({ videojuegos, onEliminar, onEditar }) {
                                     <td className="acciones-cell">
                                         <button
                                             className="btn-editar"
-                                            onClick={() => onEditar(juego)}
+                                            onClick={() => manejarEditar(juego)}
                                         >
                                             ✏️ Editar
                                         </button>
