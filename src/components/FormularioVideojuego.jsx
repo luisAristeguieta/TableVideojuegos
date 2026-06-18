@@ -19,6 +19,54 @@ function FormularioVideojuego({ onGuardar }) {
     const [sinopsis, setSinopsis] = useState("");
     const [calificacion, setCalificacion] = useState("");
 
+    const [errores, setErrores] = useState({});
+
+    function validarFormulario() {
+    const nuevosErrores = {};
+
+    // Ningun campo vacio, todo obligatorio: 
+
+    if (!titulo.trim()) {
+        nuevosErrores.titulo = "El título es obligatorio.";
+    }
+
+    if (!genero) {
+        nuevosErrores.genero = "Debes seleccionar un género.";
+    }
+
+    if (!plataforma.trim()) {
+        nuevosErrores.plataforma = "La plataforma es obligatoria.";
+    }
+
+    if (!fechaLanzamiento) {
+        nuevosErrores.fechaLanzamiento = "La fecha de lanzamiento es obligatoria.";
+    } 
+
+    if (!precio || parseFloat(precio) < 0) {
+        nuevosErrores.precio = "El precio es obligatorio y no puede ser menor que 0";
+    }
+
+    if (!sinopsis.trim()) {
+        nuevosErrores.sinopsis = "La sinopsis es obligatoria.";
+    } else if (sinopsis.trim().length < 10) {
+        nuevosErrores.sinopsis = "La sinopsis debe tener al menos 10 caracteres.";
+    } else if (sinopsis.trim().length > 250) {
+        nuevosErrores.sinopsis = "La sinopsis no puede exceder los 250 caracteres.";
+    }
+
+    if (!calificacion) {
+        nuevosErrores.calificacion = "La calificación es obligatoria.";
+    } else if (parseInt(calificacion) < 1 || parseInt(calificacion) > 100) {
+        nuevosErrores.calificacion = "La calificación debe estar entre 1 y 100.";
+    }
+
+    if (imagen && !imagen.match(/^https?:\/\/.+\..+/)) {
+        nuevosErrores.imagen = "La URL debe ser válida (ej: https://...).";
+    }
+
+    return nuevosErrores;
+}
+
     // Edicion: 
     useEffect(() => {
     if (juegoRecuperado) {
@@ -47,12 +95,18 @@ function FormularioVideojuego({ onGuardar }) {
 }, [juegoRecuperado]);
 
     // Manejar guardar
-    function manejarGuardar() {
-        // Validar campos obligatorios
-        if (!titulo.trim() || !genero || !plataforma || !fechaLanzamiento || !precio || !sinopsis.trim() || !calificacion) {
-            alert("Por favor, completa todos los campos obligatorios.");
-            return;
+    function manejarGuardar(e) {
+        
+        e.preventDefault(); // No se enviara si hay algo por default
+        const erroresActivos = validarFormulario(); // Verifica su hay errores
+
+        if (Object.keys(erroresActivos).length > 0) {
+        setErrores(erroresActivos);
+        return;
         }
+
+        setErrores({}); // Si no hay errores, limpiar y guardar para un nuevo analisis
+
 
         const juegoData = {
             id: juegoRecuperado ? juegoRecuperado.id : Date.now(),
@@ -81,24 +135,33 @@ function FormularioVideojuego({ onGuardar }) {
         <div className="formulario-container" >
             <div className="formulario-card">
             <h2>{juegoRecuperado ? "✏️ Editar Videojuego" : "🎮 Nuevo Videojuego"}</h2>
-            <form>
+            <form onSubmit={manejarGuardar} >
 
                 <div>
                     <label>Título *</label>
                     <input
                         type="text"
                         value={titulo}
-                        onChange={(e) => setTitulo(e.target.value)}
+                        onChange={(e) => { setTitulo(e.target.value);
+                            if (errores.titulo) setErrores({ ...errores, titulo: '' });
+                        }}
+
                         placeholder="Ej: The Legend of Zelda"
                         required
+                        className={errores.titulo ? 'input-error' : ''}
                     />
+                    {errores.titulo && <span className="error-mensaje">{errores.titulo}</span>}
                 </div>
 
                 <div>
                     <label>Género *</label>
                     <select
                         value={genero}
-                        onChange={(e) => setGenero(e.target.value)} required
+                        onChange={(e) => {
+                            setGenero(e.target.value);
+                            if (errores.genero) setErrores({ ...errores, genero: '' });
+                        }} required
+                        className={errores.genero ? 'input-error' : ''}
                     >
                         <option value="">Selecciona un género</option>
                         <option value="Aventura">🎯 Aventura</option>
@@ -111,6 +174,7 @@ function FormularioVideojuego({ onGuardar }) {
                         <option value="Deportes">⚽ Deportes</option>
                         <option value="Carreras">🏎️ Carreras</option>
                     </select>
+                    {errores.genero && <span className="error-mensaje">{errores.genero}</span>}
                 </div>
 
                 <div>
@@ -118,10 +182,15 @@ function FormularioVideojuego({ onGuardar }) {
                     <input
                         type="text"
                         value={plataforma}
-                        onChange={(e) => setPlataforma(e.target.value)}
+                        onChange={(e) => {
+                            setPlataforma(e.target.value);
+                            if (errores.plataforma) setErrores({ ...errores, plataforma: '' });
+                        }}
                         placeholder="Ej: PC, PS5, Xbox, Nintendo Switch"
                         required
+                        className={errores.plataforma ? 'input-error' : ''}
                     />
+                    {errores.plataforma && <span className="error-mensaje">{errores.plataforma}</span>}
                 </div>
 
                 <div>
@@ -129,10 +198,15 @@ function FormularioVideojuego({ onGuardar }) {
                     <input
                         type="date" 
                         value={fechaLanzamiento}
-                        onChange={(e) => setFechaLanzamiento(e.target.value)}
+                         onChange={(e) => {
+                            setFechaLanzamiento(e.target.value);
+                            if (errores.fechaLanzamiento) setErrores({ ...errores, fechaLanzamiento: '' });
+                        }}
                         max={new Date().toISOString().split('T')[0]}
                         required
+                        className={errores.fechaLanzamiento ? 'input-error' : ''}
                     />
+                    {errores.fechaLanzamiento && <span className="error-mensaje">{errores.fechaLanzamiento}</span>}
                 </div>
 
                 <div>
@@ -140,20 +214,28 @@ function FormularioVideojuego({ onGuardar }) {
                     <input
                         type="number"
                         value={precio}
-                        onChange={(e) => setPrecio(e.target.value)}
+                        onChange={(e) => {
+                            setPrecio(e.target.value);
+                            if (errores.precio) setErrores({ ...errores, precio: '' });
+                        }}
                         placeholder="Ej: 29.99"
                         min="0"
                         step="0.01"
                         required
                     />
+                    {errores.precio && <span className="error-mensaje">{errores.precio}</span>}
                 </div>
                 <div>
                     <label>URL de la Imagen</label>
                     <input
                         type="text"
                         value={imagen}
-                        onChange={(e) => setImagen(e.target.value)}
+                        onChange={(e) => {
+                            setImagen(e.target.value);
+                            if (errores.imagen) setErrores({ ...errores, imagen: '' });
+                        }}
                         placeholder="https://ejemplo.com/imagen.jpg"
+                        className={errores.imagen ? 'input-error' : ''}
                     />
                     {imagen && (
                         <div>
@@ -193,14 +275,19 @@ function FormularioVideojuego({ onGuardar }) {
                     <label>Sinopsis *</label>
                         <textarea
                             value={sinopsis}
-                            onChange={(e) => setSinopsis(e.target.value)}
+                            onChange={(e) => {
+                            setSinopsis(e.target.value);
+                            if (errores.sinopsis) setErrores({ ...errores, sinopsis: '' });
+                        }}
                             placeholder="Escribe una reseña corta del videojuego..."
                             rows="4"
                             minLength="10"
                             maxLength="250"
                             required
+                            className={errores.sinopsis ? 'input-error' : ''}
                         />
                         <small>{sinopsis.length}/250 caracteres</small>
+                        {errores.sinopsis && <span className="error-mensaje">{errores.sinopsis}</span>}
                 </div>
 
                 <div>
@@ -208,16 +295,21 @@ function FormularioVideojuego({ onGuardar }) {
                     <input
                         type="number"
                         value={calificacion}
-                        onChange={(e) => setCalificacion(e.target.value)}
+                        onChange={(e) => {
+                            setCalificacion(e.target.value);
+                            if (errores.calificacion) setErrores({ ...errores, calificacion: '' });
+                        }}
                         placeholder="Ej: 85"
                         min="1"
                         max="100"
                         required
+                        className={errores.calificacion ? 'input-error' : ''}
                     />
+                    {errores.calificacion && <span className="error-mensaje">{errores.calificacion}</span>}
                 </div>
                 {/* Botones */}
                 <div className="form-buttons" >
-                    <button type="button" className="btn-guardar" onClick={manejarGuardar}>
+                    <button type="submit" className="btn-guardar"> 
                         💾 Guardar
                     </button>
                     <button type="button" className="btn-cancelar" onClick={manejarCancelar}>
