@@ -2,10 +2,10 @@
 import './TablaVideojuegos.css';
 import { useNavigate } from 'react-router-dom';
 
-function TablaVideojuegos({ videojuegos, onEliminar}) {
-    
+function TablaVideojuegos({ videojuegos, onEliminar }) {
+
     const navigate = useNavigate();
-    
+
     // Función para formatear el precio
     const formatearPrecio = (precio) => {
         if (precio === 0) return 'Gratis';
@@ -17,8 +17,14 @@ function TablaVideojuegos({ videojuegos, onEliminar}) {
         return `${Math.round(progreso * 100)}%`;
     };
 
-     function manejarEditar(juego) {
+    function manejarEditar(juego) {
         navigate('/editar', { state: { juego } });
+    }
+
+    // Función para extraer el año de la fecha
+    function obtenerAnio(fechaLanzamiento) {
+        if (!fechaLanzamiento) return '—';
+        return new Date(fechaLanzamiento).getFullYear();
     }
 
     return (
@@ -37,7 +43,7 @@ function TablaVideojuegos({ videojuegos, onEliminar}) {
                                 <th>TÍTULO</th>
                                 <th>GÉNERO</th>
                                 <th>PLATAFORMA</th>
-                                <th>AÑO</th>
+                                <th>FECHA</th>
                                 <th>PRECIO</th>
                                 <th>PROGRESO</th>
                                 <th>ESTADO</th>
@@ -61,7 +67,7 @@ function TablaVideojuegos({ videojuegos, onEliminar}) {
                                     </td>
                                     <td>{juego.genero}</td>
                                     <td>{juego.plataforma}</td>
-                                    <td className="centrado">{juego.lanzamiento}</td>
+                                    <td className="centrado">{obtenerAnio(juego.fechaLanzamiento)}</td>
                                     <td className="precio-cell">{formatearPrecio(juego.precio)}</td>
                                     <td className="progreso-cell">
                                         <div className="barra-progreso-container">

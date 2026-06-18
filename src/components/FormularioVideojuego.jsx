@@ -11,11 +11,13 @@ function FormularioVideojuego({ onGuardar }) {
     const [titulo, setTitulo] = useState("");
     const [genero, setGenero] = useState("");
     const [plataforma, setPlataforma] = useState("");
-    const [lanzamiento, setLanzamiento] = useState("");
+    const [fechaLanzamiento, setFechaLanzamiento] = useState("");
     const [precio, setPrecio] = useState("");
     const [disponible, setDisponible] = useState(true);
     const [progreso, setProgreso] = useState(50);
     const [imagen, setImagen] = useState("");
+    const [sinopsis, setSinopsis] = useState("");
+    const [calificacion, setCalificacion] = useState("");
 
     // Edicion: 
     useEffect(() => {
@@ -23,27 +25,31 @@ function FormularioVideojuego({ onGuardar }) {
         setTitulo(juegoRecuperado.titulo);
         setGenero(juegoRecuperado.genero);
         setPlataforma(juegoRecuperado.plataforma);
-        setLanzamiento(juegoRecuperado.lanzamiento);
+        setFechaLanzamiento(juegoRecuperado.fechaLanzamiento);
         setPrecio(juegoRecuperado.precio);
         setDisponible(juegoRecuperado.disponible);
         setProgreso(juegoRecuperado.progreso ? Math.round(juegoRecuperado.progreso * 100) : 50);
         setImagen(juegoRecuperado.imagen);
+        setSinopsis(juegoRecuperado.sinopsis);
+        setCalificacion(juegoRecuperado.calificacion);
     } else {
         setTitulo("");
         setGenero("");
         setPlataforma("");
-        setLanzamiento("");
+        setFechaLanzamiento("")
         setPrecio("");
         setDisponible(true);
         setProgreso(50);
         setImagen("");
+        setSinopsis("");
+        setCalificacion("");
     }
 }, [juegoRecuperado]);
 
     // Manejar guardar
     function manejarGuardar() {
         // Validar campos obligatorios
-        if (!titulo.trim() || !genero || !plataforma || !lanzamiento || !precio) {
+        if (!titulo.trim() || !genero || !plataforma || !fechaLanzamiento || !precio || !sinopsis.trim() || !calificacion) {
             alert("Por favor, completa todos los campos obligatorios.");
             return;
         }
@@ -52,12 +58,14 @@ function FormularioVideojuego({ onGuardar }) {
             id: juegoRecuperado ? juegoRecuperado.id : Date.now(),
             titulo: titulo.trim(),
             genero,
-            plataforma,
-            lanzamiento: parseInt(lanzamiento),
+            plataforma: plataforma.trim(),
+            fechaLanzamiento: fechaLanzamiento,
             precio: parseFloat(precio),
             disponible,
             progreso: progreso / 100,
-            imagen: imagen || "https://via.placeholder.com/50/cccccc/ffffff?text=No+Image"
+            imagen: imagen || "https://via.placeholder.com/50/cccccc/ffffff?text=No+Image",
+            sinopsis: sinopsis.trim(),
+            calificacion: calificacion ? parseInt(calificacion) : null
         };
 
         onGuardar(juegoData);
@@ -82,6 +90,7 @@ function FormularioVideojuego({ onGuardar }) {
                         value={titulo}
                         onChange={(e) => setTitulo(e.target.value)}
                         placeholder="Ej: The Legend of Zelda"
+                        required
                     />
                 </div>
 
@@ -89,7 +98,7 @@ function FormularioVideojuego({ onGuardar }) {
                     <label>Género *</label>
                     <select
                         value={genero}
-                        onChange={(e) => setGenero(e.target.value)}
+                        onChange={(e) => setGenero(e.target.value)} required
                     >
                         <option value="">Selecciona un género</option>
                         <option value="Aventura">🎯 Aventura</option>
@@ -111,18 +120,18 @@ function FormularioVideojuego({ onGuardar }) {
                         value={plataforma}
                         onChange={(e) => setPlataforma(e.target.value)}
                         placeholder="Ej: PC, PS5, Xbox, Nintendo Switch"
+                        required
                     />
                 </div>
 
                 <div>
-                    <label>Año de Lanzamiento *</label>
+                    <label>Fecha de Lanzamiento *</label>
                     <input
-                        type="number"
-                        value={lanzamiento}
-                        onChange={(e) => setLanzamiento(e.target.value)}
-                        placeholder="Ej: 2023"
-                        min="1970"
-                        max="2025"
+                        type="date" 
+                        value={fechaLanzamiento}
+                        onChange={(e) => setFechaLanzamiento(e.target.value)}
+                        max={new Date().toISOString().split('T')[0]}
+                        required
                     />
                 </div>
 
@@ -135,6 +144,7 @@ function FormularioVideojuego({ onGuardar }) {
                         placeholder="Ej: 29.99"
                         min="0"
                         step="0.01"
+                        required
                     />
                 </div>
                 <div>
@@ -179,6 +189,32 @@ function FormularioVideojuego({ onGuardar }) {
                     </label>
                 </div>
 
+                <div>
+                    <label>Sinopsis *</label>
+                        <textarea
+                            value={sinopsis}
+                            onChange={(e) => setSinopsis(e.target.value)}
+                            placeholder="Escribe una reseña corta del videojuego..."
+                            rows="4"
+                            minLength="10"
+                            maxLength="250"
+                            required
+                        />
+                        <small>{sinopsis.length}/250 caracteres</small>
+                </div>
+
+                <div>
+                    <label>Calificación (1-100) *</label>
+                    <input
+                        type="number"
+                        value={calificacion}
+                        onChange={(e) => setCalificacion(e.target.value)}
+                        placeholder="Ej: 85"
+                        min="1"
+                        max="100"
+                        required
+                    />
+                </div>
                 {/* Botones */}
                 <div className="form-buttons" >
                     <button type="button" className="btn-guardar" onClick={manejarGuardar}>
