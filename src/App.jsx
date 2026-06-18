@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'; 
 import TablaVideojuegos from './components/TablaVideojuegos';
 import data from './data/videojuegos';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
@@ -10,11 +10,20 @@ import PaginaNoEncontrada from './components/PaginaNoEncontrada';
 
 function App() {
   // Estado para los videojuegos (usando los datos importados)
-  const [videojuegos, setVideojuegos] = useState(data);
+  const [videojuegos, setVideojuegos] = useState(() => {
+    const datosGuardados = localStorage.getItem("lista_videojuegos");
+    return datosGuardados ? JSON.parse(datosGuardados) : data;
+  });
 
   function agregarVideojuego(juegoNuevo) {
     setVideojuegos([...videojuegos, juegoNuevo]);
   }
+
+
+  //Escritura aut - Guarda en localStorage cada vez que cambia el estado
+  useEffect(() => {
+    localStorage.setItem("lista_videojuegos", JSON.stringify(videojuegos));
+  }, [videojuegos]);
 
   function eliminarVideojuego(id) {
     const filtrados = videojuegos.filter((juego) => juego.id !== id);
