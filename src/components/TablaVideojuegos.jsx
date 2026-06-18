@@ -72,6 +72,21 @@ function TablaVideojuegos({ videojuegos, onEliminar, onEditar }) {
                                             {juego.disponible ? 'Disponible' : 'Agotado'}
                                         </span>
                                     </td>
+
+                                    <td className="acciones-cell">
+                                        <button
+                                            className="btn-editar"
+                                            onClick={() => onEditar(juego)}
+                                        >
+                                            ✏️ Editar
+                                        </button>
+                                        <button
+                                            className="btn-eliminar"
+                                            onClick={() => onEliminar(juego.id)}
+                                        >
+                                            🗑️ Eliminar
+                                        </button>
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>
